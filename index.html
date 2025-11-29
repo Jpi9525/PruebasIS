@@ -3,48 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>Elige tres géneros musicales</title>
+
     <style>
         body {
             background-color: #1a1a1a;
             color: white;
             font-family: Arial, sans-serif;
-            text-align:center;
+            text-align: center;
         }
 
         .container {
-            width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            padding-top: 50px;
+            padding-top: 40px;
         }
 
         h1 {
             margin-bottom: 40px;
         }
 
+        /* GRID DE OPCIONES */
         .grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 35px;
             justify-items: center;
         }
 
+        /* CONTENEDOR COMPLETO (CÍRCULO + TEXTO) */
+        .option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* CÍRCULO CON IMAGEN */
         .circle {
-            width: 110px;
-            height: 110px;
-            background-color: white;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
+            border: 4px solid transparent;
+            overflow: hidden;
+            background-color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            color: black;
-            font-weight: bold;
-            border: 4px solid transparent;
-            transition: .2s;
+            transition: .25s;
         }
 
-        .circle.selected {
+        /* IMAGEN DENTRO DEL CÍRCULO */
+        .circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* TEXTO DEL GÉNERO */
+        .genre-name {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* SELECCIONADO */
+        .selected .circle {
             border: 4px solid #00ff9d;
             transform: scale(1.1);
         }
@@ -69,12 +92,21 @@
 
     <form method="POST" action="/guardar_generos/">
         {% csrf_token %}
-        
+
         <div class="grid">
             {% for genero in generos %}
-            <div class="circle" onclick="toggleSelect(this)">
-                <input type="checkbox" name="generos" value="{{ genero }}" hidden>
-                {{ genero }}
+            <div class="option" onclick="toggleSelect(this)">
+                
+                <!-- checkbox oculto -->
+                <input type="checkbox" name="generos" value="{{ genero.nombre }}" hidden>
+
+                <!-- círculo con imagen -->
+                <div class="circle">
+                    <img src="{{ genero.imagen }}" alt="{{ genero.nombre }}">
+                </div>
+
+                <!-- nombre del género -->
+                <div class="genre-name">{{ genero.nombre }}</div>
             </div>
             {% endfor %}
         </div>
@@ -86,15 +118,15 @@
 <script>
     let selectedCount = 0;
 
-    function toggleSelect(div) {
-        const checkbox = div.querySelector("input[type=checkbox]");
+    function toggleSelect(optionDiv) {
+        const checkbox = optionDiv.querySelector("input[type=checkbox]");
 
-        if (!div.classList.contains("selected") && selectedCount >= 3) {
+        if (!optionDiv.classList.contains("selected") && selectedCount >= 3) {
             alert("Solo puedes seleccionar 3 géneros");
             return;
         }
 
-        div.classList.toggle("selected");
+        optionDiv.classList.toggle("selected");
         checkbox.checked = !checkbox.checked;
 
         selectedCount += checkbox.checked ? 1 : -1;
