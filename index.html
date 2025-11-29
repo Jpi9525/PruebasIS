@@ -3,243 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <title>Elige tres géneros musicales</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        :root{
-            --accent: #00ff9d;
-            --bg: #1a1a1a;
-            --circle-size: 150px;
-        }
-        *{box-sizing:border-box}
         body {
-            background-color: var(--bg);
+            background-color: #1a1a1a;
             color: white;
             font-family: Arial, sans-serif;
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 32px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1100px;
-            margin: 0 auto;
             text-align: center;
+            padding: 40px;
+            margin: 0;
         }
 
         h1 {
-            margin: 0 0 24px 0;
-            font-size: 28px;
+            margin-bottom: 40px;
         }
 
-        .grid-wrap {
-            display:flex;
-            justify-content:center; /* centra la grid dentro del contenedor */
-        }
-
-        /* GRID RESPONSIVE: auto-ajusta el número de columnas según ancho */
+        /* GRID: siempre 3 por fila */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 28px;
-            width: 100%;
-            max-width: 1000px;
-            align-items: start;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            justify-items: center;
+            max-width: 950px;
+            margin: 0 auto;
         }
 
-        /* cada opción (círculo + texto) */
         .option {
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
+            width: 180px;
         }
 
         .circle {
-            width: var(--circle-size);
-            height: var(--circle-size);
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
+            background-color: white;
             border: 4px solid transparent;
             overflow: hidden;
-            background-color: white;
+            transition: .2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform .18s ease, border-color .18s ease;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
         }
 
         .circle img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display:block;
-        }
-
-        .genre-name {
-            margin-top: 10px;
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffffff;
-            text-align:center;
         }
 
         .selected .circle {
-            border-color: var(--accent);
-            transform: scale(1.08);
+            border-color: #00ff9d;
+            transform: scale(1.1);
+        }
+
+        .genre-name {
+            margin-top: 12px;
+            font-weight: bold;
+            font-size: 16px;
         }
 
         #submitBtn {
-            margin-top: 28px;
-            padding: 12px 28px;
-            background-color: var(--accent);
+            margin-top: 40px;
+            padding: 15px 40px;
+            background-color: #00ff9d;
             border: none;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
             border-radius: 10px;
-            color: #000;
+            cursor: pointer;
         }
 
-        /* contador visible */
         .counter {
-            margin-top: 12px;
-            font-size: 14px;
+            margin-top: 20px;
             opacity: 0.9;
-        }
-
-        /* accesibilidad: focus */
-        .option:focus {
-            outline: 3px solid rgba(0,255,157,0.18);
-            outline-offset: 4px;
-        }
-
-        @media (max-width:480px){
-            :root{--circle-size:120px}
-            h1{font-size:20px}
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Elige hasta 3 géneros musicales</h1>
 
-        <form method="POST" action="/guardar_generos/">
-            <!-- si necesitas CSRF en Django, añade el token en la plantilla Django, no aquí -->
-            <div class="grid-wrap">
-                <div class="grid" id="grid">
+<h1>Elige tres géneros musicales</h1>
 
-                    <!-- 10 opciones (reemplaza las src por tus imágenes) -->
-                    <label class="option" tabindex="0">
-                        <input type="checkbox" name="generos" value="Rock" hidden>
-                        <div class="circle"><img src="https://via.placeholder.com/300?text=Rock" alt="Rock"></div>
-                        <div class="genre-name">Rock</div>
-                    </label>
+<form method="POST" action="/guardar_generos/">
 
-                    <label class="option" tabindex="0">
-                        <input type="checkbox" name="generos" value="Pop" hidden>
-                        <div class="circle"><img src="https://via.placeholder.com/300?text=Pop" alt="Pop"></div>
-                        <div class="genre-name">Pop</div>
-                    </label>
+    <div class="grid">
 
-                    <label class="option" tabindex="0">
-                        <input type="checkbox" name="generos" value="Jazz" hidden>
-                        <div class="circle"><img src="https://via.placeholder.com/300?text=Jazz" alt="Jazz"></div>
-                        <div class="genre-name">Jazz</div>
-                    </label>
+        <!-- 10 OPCIONES -->
+        <label class="option">
+            <input type="checkbox" name="generos" value="Rock" hidden>
+            <div class="circle"><img src="https://via.placeholder.com/150?text=Rock"></div>
+            <div class="genre-name">Rock</div>
+        </label>
 
-                    <label class="option" tabindex="0">
-                        <input type="checkbox" name="generos" value="Hip-hop" hidden>
-                        <div class="circle"><img src="https://via.placeholder.com/300?text=Hip-hop" alt="Hip-hop"></div>
-                        <div class="genre-name">Hip-hop</div>
-                    </label>
+        <label class="option">
+            <input type="checkbox" name="generos" value="Pop" hidden>
+            <div class="circle"><img src="https://via.placeholder.com/150?text=Pop"></div>
+            <div class="genre-name">Pop</div>
+        </label>
 
-                    <label class="option" tabindex="0">
-                        <input type="checkbox" name="generos" value="Electronic" hidden>
-                        <div class="circle"><img src="https://via.placeholder.com/300?text=Electronic" alt="Electronic"></div>
-                        <div class="genre-name">Electronic</div>
-                    </label>
+        <label class="option">
+            <input type="checkbox" name="generos" value="Jazz" hidden>
+            <div class="circle"><img src="https://via.placeholder.com/150?text=Jazz"></div>
+            <div class="genre-name">Jazz</div>
+        </label>
 
-                    <label class="option" tabindex="0">
-                        <input type="checkbox" name="generos" value="Classical" hidden>
-                        <div class="circle"><img src="https://via.placeholder.com/300?text=Classical" alt="Classical"></div>
-                        <div class="genre-name">Classical</div>
-                    </label>
+        <label class="option">
+            <input type="checkbox" name="generos" value="Hip-hop" hidden>
+            <div class="circle"><img src="https://via.placeholder.com/150?text=Hip-Hop"></div>
+            <div class="genre-name">Hip-hop</div>
+        </label>
 
-                    <label class="option" tabindex="0">
-                        <input type="checkbox" name="generos" value="Reggae" hidden>
-                        <div class="circle"><img src="https://via.placeholder.com/300?text=Reggae" alt="Reggae"></div>
-                        <div class="genre-name">Reggae</div>
-                    </label>
+        <label class="option">
+            <input type="checkbox" name="generos" value="Electrónica" hidden>
+            <div class="circle"><img src="https://via.placeholder.com/150?text=EDM"></div>
+            <div class="genre-name">Electrónica</div>
+        </label>
 
-                    <label class="option" tabindex="0">
-                        <input type="checkbox" name="generos" value="Metal" hidden>
-                        <div class="circle"><img src="https://via.placeholder.com/300?text=Metal" alt="Metal"></div>
-                        <div class="genre-name">Metal</div>
-                    </label>
+        <label class="option">
+            <input type="checkbox" name="generos" value="Clásica" hidden>
+            <div class="circle"><img src="https://via.placeholder.com/150?text=Clasica"></div>
+            <div class="genre-name">Clásica</div>
+        </label>
 
-                    <label class="option" tabindex="0">
-                        <input type="checkbox" name="generos" value="Country" hidden>
-                        <div class="circle"><img src="https://via.placeholder.com/300?text=Country" alt="Country"></div>
-                        <div class="genre-name">Country</div>
-                    </label>
+        <label class="option">
+            <input type="checkbox" name="generos" value="Reggaeton" hidden>
+            <div class="circle"><img src="https://via.placeholder.com/150?text=Reggaeton"></div>
+            <div class="genre-name">Reggaetón</div>
+        </label>
 
-                    <label class="option" tabindex="0">
-                        <input type="checkbox" name="generos" value="R&B" hidden>
-                        <div class="circle"><img src="https://via.placeholder.com/300?text=R%26B" alt="R&B"></div>
-                        <div class="genre-name">R&amp;B</div>
-                    </label>
+        <label class="option">
+            <input type="checkbox" name="generos" value="Metal" hidden>
+            <div class="circle"><img src="https://via.placeholder.com/150?text=Metal"></div>
+            <div class="genre-name">Metal</div>
+        </label>
 
-                </div>
-            </div>
+        <label class="option">
+            <input type="checkbox" name="generos" value="Country" hidden>
+            <div class="circle"><img src="https://via.placeholder.com/150?text=Country"></div>
+            <div class="genre-name">Country</div>
+        </label>
 
-            <div class="counter" id="counter">Seleccionados: 0 / 3</div>
-            <button id="submitBtn" type="submit">Continuar</button>
-        </form>
+        <label class="option">
+            <input type="checkbox" name="generos" value="R&B" hidden>
+            <div class="circle"><img src="https://via.placeholder.com/150?text=R%26B"></div>
+            <div class="genre-name">R&B</div>
+        </label>
+
     </div>
 
-    <script>
-        // comportamiento: permite seleccionar hasta 3
-        const options = Array.from(document.querySelectorAll('.option'));
-        const counterEl = document.getElementById('counter');
-        let selectedCount = 0;
+    <div class="counter" id="counter">Seleccionados: 0 / 3</div>
 
-        function updateCounter() {
-            counterEl.textContent = `Seleccionados: ${selectedCount} / 3`;
-        }
+    <button id="submitBtn" type="submit">Continuar</button>
 
-        options.forEach(opt => {
-            const checkbox = opt.querySelector('input[type="checkbox"]');
+</form>
 
-            // click en la etiqueta
-            opt.addEventListener('click', (e) => {
-                // evitar que el submit se active si se hace click en el botón accidentalmente
-                if (e.target.tagName === 'BUTTON') return;
+<script>
+    let selectedCount = 0;
+    const options = document.querySelectorAll('.option');
+    const counter = document.getElementById('counter');
 
-                if (!opt.classList.contains('selected') && selectedCount >= 3) {
-                    // si ya hay 3, no permitir más
-                    alert('Solo puedes seleccionar hasta 3 géneros');
-                    return;
-                }
-                opt.classList.toggle('selected');
-                checkbox.checked = !checkbox.checked;
-                selectedCount += checkbox.checked ? 1 : -1;
-                updateCounter();
-            });
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            const checkbox = option.querySelector('input');
 
-            // accesibilidad: seleccionar con Enter o Space
-            opt.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    opt.click();
-                }
-            });
+            if (!option.classList.contains("selected") && selectedCount >= 3) {
+                alert("Solo puedes seleccionar 3 géneros");
+                return;
+            }
+
+            option.classList.toggle("selected");
+            checkbox.checked = !checkbox.checked;
+
+            selectedCount += checkbox.checked ? 1 : -1;
+            counter.textContent = `Seleccionados: ${selectedCount} / 3`;
         });
+    });
+</script>
 
-        updateCounter();
-    </script>
 </body>
 </html>
+
+
