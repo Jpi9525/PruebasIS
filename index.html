@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Elige tres géneros musicales</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align:center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            justify-items: center;
+        }
+
+        .circle {
+            width: 110px;
+            height: 110px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            border: 4px solid transparent;
+            transition: .2s;
+        }
+
+        .circle.selected {
+            border: 4px solid #00ff9d;
+            transform: scale(1.1);
+        }
+
+        #submitBtn {
+            margin-top: 50px;
+            padding: 15px 40px;
+            background-color: #00ff9d;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Elige tres géneros musicales</h1>
+
+    <form method="POST" action="/guardar_generos/">
+        {% csrf_token %}
+        
+        <div class="grid">
+            {% for genero in generos %}
+            <div class="circle" onclick="toggleSelect(this)">
+                <input type="checkbox" name="generos" value="{{ genero }}" hidden>
+                {{ genero }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <button id="submitBtn" type="submit">Continuar</button>
+    </form>
+</div>
+
+<script>
+    let selectedCount = 0;
+
+    function toggleSelect(div) {
+        const checkbox = div.querySelector("input[type=checkbox]");
+
+        if (!div.classList.contains("selected") && selectedCount >= 3) {
+            alert("Solo puedes seleccionar 3 géneros");
+            return;
+        }
+
+        div.classList.toggle("selected");
+        checkbox.checked = !checkbox.checked;
+
+        selectedCount += checkbox.checked ? 1 : -1;
+    }
+</script>
+
+</body>
+</html>
